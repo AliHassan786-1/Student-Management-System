@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management System</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f0f2f5; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .card { 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            width: 380px; 
+        }
+        h2 { 
+            text-align: center; 
+            color: #007BFF; 
+            margin-top: 0; 
+        }
+        .info { 
+            margin: 12px 0; 
+            font-size: 16px; 
+            color: #333; 
+        }
+        .subjects-list { 
+            margin: 10px 0 15px 20px; 
+            padding: 0; 
+        }
+        .subjects-list li { 
+            margin-bottom: 5px; 
+            color: #555; 
+        }
+        .pass { 
+            color: #28a745; 
+            font-weight: bold; 
+        }
+        .fail { 
+            color: #dc3545; 
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="resultCard" style="display:none;">
+        <h2>Student Result Card</h2>
+        <div class="info"><strong>Student Name:</strong> <span id="sName"></span></div>
+        <div class="info"><strong>Subjects & Marks:</strong></div>
+        <ul class="subjects-list" id="sSubjects"></ul>
+        <hr style="border: 0; border-top: 1px solid #eee;">
+        <div class="info"><strong>Total Marks:</strong> <span id="sTotal"></span> / 300</div>
+        <div class="info"><strong>Percentage:</strong> <span id="sPercentage"></span>%</div>
+        <div class="info"><strong>Grade:</strong> <span id="sGrade"></span></div>
+        <div class="info"><strong>Status:</strong> <span id="sStatus"></span></div>
+    </div>
+
+    <script>
+        // 1. Take student's name using prompt()
+        var studentName = prompt("Enter student's name:");
+
+        // 4. Store subject names in an array
+        var subjects = ["Mathematics", "English", "Science"];
+        var marks = [];
+        var totalMarks = 0;
+
+        // Take marks for each subject using a loop and prompts
+        for (var i = 0; i < subjects.length; i++) {
+            var subjectMark = Number(prompt("Enter marks for " + subjects[i] + " (out of 100):"));
+            marks.push(subjectMark);
+            totalMarks += subjectMark; // 2. Calculate total marks
+        }
+
+        // 2. Calculate percentage (3 subjects x 100 max = 300 total max)
+        var maxTotalMarks = subjects.length * 100;
+        var percentage = (totalMarks / maxTotalMarks) * 100;
+
+        // 3. Assign a grade using if...else if
+        var grade = "";
+        if (percentage >= 90) {
+            grade = "A+";
+        } else if (percentage >= 80) {
+            grade = "A";
+        } else if (percentage >= 70) {
+            grade = "B";
+        } else if (percentage >= 60) {
+            grade = "C";
+        } else if (percentage >= 50) {
+            grade = "D";
+        } else {
+            grade = "Fail";
+        }
+
+        // Determine Pass/Fail Status (Passing criteria: 50% or above)
+        var status = percentage >= 50 ? "Pass" : "Fail";
+
+        // 5. Use a for loop to format subjects and marks for display
+        var subjectsHTML = "";
+        for (var i = 0; i < subjects.length; i++) {
+            subjectsHTML += "<li>" + subjects[i] + ": <strong>" + marks[i] + " / 100</strong></li>";
+        }
+
+        // 6. Display complete result card details on the DOM
+        document.getElementById("sName").textContent = studentName;
+        document.getElementById("sSubjects").innerHTML = subjectsHTML;
+        document.getElementById("sTotal").textContent = totalMarks;
+        document.getElementById("sPercentage").textContent = percentage.toFixed(2);
+        document.getElementById("sGrade").textContent = grade;
+        
+        var statusSpan = document.getElementById("sStatus");
+        statusSpan.textContent = status;
+        statusSpan.className = status === "Pass" ? "pass" : "fail";
+
+        // Make the result card visible
+        document.getElementById("resultCard").style.display = "block";
+    </script>
+
+</body>
+</html>
